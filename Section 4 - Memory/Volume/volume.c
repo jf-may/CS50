@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     // Check command-line arguments
     if (argc != 4)
     {
-        printf("Usage: ./volume input.wav output.wav factor\n");
+        printf("Usage: ./volume input.wav output.wav scaling_factor\n");
         return 1;
     }
 
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     }
 
     // Determine scaling factor
-    float factor = atof(argv[3]);
+    float scaling_factor = atof(argv[3]);
 
     /* Copy header from input file to output file
        (NOTE: WAV header size is 44 bytes)        */
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     int16_t buffer;
     while (fread(&buffer, sizeof(int16_t), 1, input))
     {
-        buffer *= factor;
+        buffer *= scaling_factor;
         fwrite(&buffer, sizeof(int16_t), 1, output);
     }
 
