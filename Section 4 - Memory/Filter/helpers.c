@@ -1,12 +1,10 @@
 #include "helpers.h"
 #include "stdio.h"
-#include "stdlib.h"
 
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
 {
     const double one_third = 0.333333333333333333333333333333333333333333333333;
-
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
@@ -17,7 +15,6 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
             image[i][j].rgbtRed = grayscale_pixel;
         }
     }
-
     return;
 }
 
