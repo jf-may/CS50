@@ -24,20 +24,16 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
 // Reflect image horizontally
 void reflect(int height, int width, RGBTRIPLE image[height][width])
 {
-    RGBTRIPLE(*temp_image)[width] = calloc(height, width * sizeof(RGBTRIPLE));
-
+    const int width_inv = width - 1;
     for (int i = 0; i < height; i++)
     {
-        for (int j = 0; j < width; j++)
+        for (int j = 0; j < width / 2; j++)
         {
-            temp_image[i][j] = image[i][j];
-        }
-        for (int j = 0; j < width; j++)
-        {
-            image[i][j] = temp_image[i][width - j];
+            RGBTRIPLE temp = image[i][j];
+            image[i][j] = image[i][width_inv - j];
+            image[i][width_inv - j] = temp;
         }
     }
-
     return;
 }
 
