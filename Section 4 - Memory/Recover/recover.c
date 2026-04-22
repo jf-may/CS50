@@ -5,7 +5,7 @@
 int main(int argc, char *argv[])
 {
     const int BUFFER_SIZE = 512;
-    int count = 0;
+    int count = 1;
     BYTE buffer[BUFFER_SIZE];
 
     // Check command-line arguments
@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
             buffer[3] < 0xe0 || buffer[3] > 0xef)
         {
             // Si la signature es la correcta, se abre un nuevo archivo
-            count++;
             FILE *output = fopen(("%03i.jpg", count), "w");
+            count++;
 
             // TODO: Ahora hay que leer bloques y agregarlos al archivo hasta que haya otra signature, en cuyo caso se cierra el file anterior y se abre otro
             fwrite(buffer, 1, BUFFER_SIZE, output);
