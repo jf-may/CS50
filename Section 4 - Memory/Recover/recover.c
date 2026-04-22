@@ -23,7 +23,9 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    // Mientras haya bloques para leer, entrá al loop
+// (NOTA: comentarios en español son temporales para entender la lógica del código)
+
+    // Mientras haya bloques para leer, entrá al loop.
     while (fread(buffer, 1, BUFFER_SIZE, input) == BUFFER_SIZE)
     {
         // Si la signature es la correcta, entrá al loop
