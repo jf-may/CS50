@@ -4,10 +4,6 @@
  
 int main(int argc, char *argv[])
 {
-    const int BUFFER_SIZE = 512;
-    int count = 1;
-    BYTE buffer[BUFFER_SIZE];
-
     // Check command-line arguments
     if (argc != 2)
     {
@@ -23,24 +19,50 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-// (NOTA: comentarios en español son temporales para entender la lógica del código)
+    // Open null output file and buffer
+    FILE *output = NULL;
+    const int BUFFER_SIZE = 512;
+    BYTE buffer[BUFFER_SIZE];
+    int count = 0;
 
-    // Mientras haya bloques para leer, entrá al loop.
-    while (fread(buffer, 1, BUFFER_SIZE, input) == BUFFER_SIZE)
+    // Read input file in blocks of 512 bytes
+    while (fread(buffer, 1, BUFFER_SIZE, input))
     {
-        // Si la signature es la correcta, entrá al loop
-        if (buffer[0] != 0xff || buffer[1] != 0xd8 || buffer[2] != 0xff ||
-            buffer[3] < 0xe0 || buffer[3] > 0xef)
+        // Check for JPEG signature
+        if (buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff &&
+            buffer[3] >= 0xe0 && buffer[3] <= 0xef)
         {
-            // Si la signature es la correcta, se abre un nuevo archivo
-            FILE *output = fopen(("%03i.jpg", count), "w");
-            count++;
+            if (output != NULL)
+            {
+                fclose(output);
+            }
 
-            // TODO: Ahora hay que leer bloques y agregarlos al archivo hasta que haya otra signature, en cuyo caso se cierra el file anterior y se abre otro
+            // Open new output file
+            char filename[8];
+            sprintf(filename, "%03i.jpg", count);
+            output = fopen(filename, "w");
+            if (output == NULL)
+            {
+                printf("Could not create output file.\n");
+                fclose(input);
+                return 1;
+            }
+
+            count++;
+        }
+        // Check for open file and write buffer to it
+        if (output != NULL)
+        {
             fwrite(buffer, 1, BUFFER_SIZE, output);
         }
     }
 
     // Close files
     fclose(input);
+    if (output != NULL)
+    {
+        fclose(output);
+    }
+
+    return 0;
 }
