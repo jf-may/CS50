@@ -53,29 +53,9 @@ person *create_family(int generations)
         p->parents[1] = parent1;
 
         // Randomly assign current person's alleles based on the alleles of their parents
-        int r = random() % 4;
-        if (r == 0)
-        {
-            p->alleles[0] = parent0->alleles[0];
-            p->alleles[1] = parent1->alleles[0];
-        }
-        else if (r == 1)
-        {
-            p->alleles[0] = parent0->alleles[0];
-            p->alleles[1] = parent1->alleles[1];
-        }
-        else if (r == 2)
-        {
-            p->alleles[0] = parent0->alleles[1];
-            p->alleles[1] = parent1->alleles[0];
-        }
-        else
-        {
-            p->alleles[0] = parent0->alleles[1];
-            p->alleles[1] = parent1->alleles[1];
-        }
+        p->alleles[0] = parent0->alleles[random() % 2];
+        p->alleles[1] = parent1->alleles[random() % 2];
     }
-
     // If there are no generations left to create
     else
     {
@@ -96,11 +76,8 @@ person *create_family(int generations)
 void free_family(person *p)
 {
     // Handle base case
-    // TODO: Maybe check if both parents are null.
-    //       If one is null the other should also be, but just maybe
-    if (p->parents[0] == NULL)
+    if (p == NULL)
     {
-        free(p);
         return;
     }
 
